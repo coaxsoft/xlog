@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails'
 require 'xlog/xlogger'
 require 'xlog/version'
@@ -38,10 +40,14 @@ module Xlog
     def initialize
       @xlogger = Xlogger.instance
     end
+
+    def custom_logger=(logger)
+      xlogger.custom_logger = logger
+    end
   end
 
   configure {}
 end
 
-initializer = './config/initializers/xlog.rb'
-require initializer if File.exist?(initializer)
+# initializer = './config/initializers/xlog.rb'
+# require initializer if File.exist?(initializer)

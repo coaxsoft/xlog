@@ -1,0 +1,26 @@
+AllCops:
+  Exclude:
+    - xlog.gemspec
+    - spec/**/*.rb
+    - spec/*.rb
+
+Style/Documentation:
+  Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 150
+
+Metrics/ParameterLists:
+  Max: 6
+
+Metrics/MethodLength:
+  Max: 15
+
+Naming/UncommunicativeMethodParamName:
+  Enabled: false  
+
+Metrics/AbcSize:
+  Max: 17  
