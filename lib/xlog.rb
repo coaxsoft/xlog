@@ -48,6 +48,3 @@ module Xlog
 
   configure {}
 end
-
-# initializer = './config/initializers/xlog.rb'
-# require initializer if File.exist?(initializer)

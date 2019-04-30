@@ -31,8 +31,8 @@ module Xlog
     end
 
     # do NOT refactor error and and_raise_error
-    # they MUST BE NOT DRY in order to log correct backtrace
     def error(e, message, data)
+      # they MUST BE NOT DRY in order to log correct backtrace
       log(:error, "#{e.class}: #{e.try(:message)}. \n #{compose_log(message, data)} \n Error backtrace: \n#{backtrace(e)}")
     end
 

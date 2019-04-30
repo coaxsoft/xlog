@@ -2,6 +2,7 @@
 
 require 'bundler/setup'
 require 'xlog'
+require 'faker'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -13,4 +14,8 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+end
+
+def log_text
+  File.open(TEST_LOG).read
 end
