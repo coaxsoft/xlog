@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require 'rails'
-require 'xlog/xlogger'
-require 'xlog/version'
+require_relative 'xlog/xlogger'
+require_relative 'xlog/version'
 
 module Xlog
   class << self
