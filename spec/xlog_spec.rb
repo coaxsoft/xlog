@@ -68,5 +68,15 @@ RSpec.describe Xlog do
         expect(log_text).to include('xlog/spec/xlog_spec.rb')
       end
     end
+
+    context '.and_raise_error' do
+      let(:message) { Faker::Lorem.sentence }
+
+      it 'logs error and raises it' do
+        raise StandardError.new
+      rescue StandardError => e
+        expect { Xlog.and_raise_error(e, message: message) }.to raise_error StandardError
+      end
+    end
   end
 end
