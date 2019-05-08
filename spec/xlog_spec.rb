@@ -68,5 +68,42 @@ RSpec.describe Xlog do
         expect(log_text).to include('xlog/spec/xlog_spec.rb')
       end
     end
+
+    context '.and_raise_error' do
+      let(:message) { Faker::Lorem.sentence }
+
+      it 'logs error and raises it' do
+        raise StandardError.new
+      rescue StandardError => e
+        expect { Xlog.and_raise_error(e, message: message) }.to raise_error StandardError
+      end
+    end
+
+    context '.tag_logger' do
+      let(:message1) { Faker::Lorem.sentence }
+      let(:message2) { Faker::Lorem.sentence }
+
+      it 'logs message with custom tags' do
+        Xlog.tag_logger(message1, message2)
+        Xlog.info('Some message')
+
+        expect(log_text).to include("[#{message1}]")
+        expect(log_text).to include("[#{message2}]")
+      end
+    end
+
+    context '.clear_tags' do
+      let(:message1) { Faker::Lorem.sentence }
+      let(:message2) { Faker::Lorem.sentence }
+
+      it 'clears custom tags' do
+        Xlog.tag_logger(message1, message2)
+        Xlog.clear_tags
+        Xlog.info('Some message')
+
+        expect(log_text).to_not include("[#{message1}]")
+        expect(log_text).to_not include("[#{message2}]")
+      end
+    end
   end
 end

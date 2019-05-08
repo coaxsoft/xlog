@@ -17,6 +17,10 @@ module Xlog
       @tags = tags
     end
 
+    def clear_tags
+      @tags = nil
+    end
+
     def log(type, text)
       tags = [time_stamp, called_from(type), type] + Array.wrap(@tags)
       @base_logger.tagged(tags.compact) { @base_logger.send(type, text) }
