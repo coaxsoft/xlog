@@ -23,4 +23,4 @@ Naming/UncommunicativeMethodParamName:
   Enabled: false  
 
 Metrics/AbcSize:
-  Max: 17  
+  Max: 17
