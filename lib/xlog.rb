@@ -12,6 +12,10 @@ module Xlog
       config.xlogger.tag_logger(tags)
     end
 
+    def clear_tags
+      config.xlogger.clear_tags
+    end
+
     def info(message, data: nil)
       config.xlogger.info(message, data)
     end

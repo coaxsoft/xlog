@@ -35,6 +35,17 @@ The only difference between `Xlog.error` and `Xlog.and_raise_error` is that seco
 Xlog automatically defines Rails application name and environment.
 It writes logs into `log/xlog_[environement].log`
 
+Xlog also supports custom tags
+```ruby
+Xlog.tag_logger('custom_tag')
+Xlog.info('Some text') # [2019-04-30 12:29:13 UTC] [ArtilesController.show] [info] [custom_tag] Message: Some info text
+```
+
+Clear tags with: 
+```ruby
+Xlog.clear_tags
+```
+
 ## Configuration
 Xlog is ready to use right out of the box, but it's possible to reconfigure default logger. Default logger is simple `Logger.new`. Add this code to `config/initializers/xlog.rb` and set any custom logger you want.
 
@@ -78,7 +89,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/OrestF/xlog. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/coaxsoft/xlog. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -86,7 +97,7 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Xlog project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/OrestF/xlog/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Xlog project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/coaxsoft/xlog/blob/master/CODE_OF_CONDUCT.md).
 
 ## Idea
 Initially designed and created by [Orest Falchuk (OrestF)](https://github.com/OrestF)

@@ -10,9 +10,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ['OrestF']
   spec.email         = ['falchuko@gmail.com']
 
-  spec.summary       = 'Xlog is just awesome logger'
-  spec.description   = 'Xlog is just awesome logger'
-  spec.homepage      = 'https://github.com/OrestF/xlog'
+  spec.summary       = 'Xlog - awesome logger for your Rails app. Logs everything you need in well-formatted view with timestamp, caller path and tags.'
+  spec.description   = 'Xlog - awesome logger for your Rails app. Logs everything you need in well-formatted view with timestamp, caller path and tags.'
+  spec.homepage      = 'https://github.com/coaxsoft/xlog'
   spec.license       = 'MIT'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

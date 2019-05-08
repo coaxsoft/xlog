@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    xlog (0.1.0)
+    xlog (0.1.2)
 
 GEM
   remote: https://rubygems.org/
