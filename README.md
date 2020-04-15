@@ -1,8 +1,9 @@
-# Xlog v0.1.3
+# Xlog v0.1.4
 
 Xlog - awesome logger for your Rails app. Logs everything you need in well-formatted view with timestamp, caller path and tags.
 
 ## Usage
+##### Standard
 Log any info with `.info` method
 ```ruby
 Xlog.info('Some info text') # [2019-04-30 12:29:13 UTC] [ArtilesController.show] [info] Message: Some info text
@@ -44,6 +45,18 @@ Xlog.info('Some text') # [2019-04-30 12:29:13 UTC] [ArtilesController.show] [inf
 Clear tags with: 
 ```ruby
 Xlog.clear_tags
+```
+##### Middleware
+From version 0.1.4 Xlog could be used as Rails middleware. It catches `StandardError` using `Xlog.and_raise_error`.
+```ruby
+# /config/application.rb
+ module MyApp
+   class Application < Rails::Application
+     # some configs...
+
+     config.middleware.use Xlog::Middleware
+   end
+ end
 ```
 
 ## Configuration

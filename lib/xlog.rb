@@ -3,6 +3,7 @@
 require 'rails'
 require_relative 'xlog/xlogger'
 require_relative 'xlog/version'
+require_relative 'xlog/middleware'
 
 module Xlog
   class << self
