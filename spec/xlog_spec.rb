@@ -19,7 +19,11 @@ RSpec.describe Xlog do
       end
     end
     it 'changes base_logger' do
-      expect(Xlog.config.xlogger.base_logger).to be custom_logger
+      # do not compare formatter, because Xlog adds formatter after assignement and
+      # base_logger can't be equal to custom_logger
+      (Xlog.config.xlogger.base_logger.instance_variables - [:@formatter]).each do |var|
+        expect(Xlog.config.xlogger.base_logger.instance_variable_get(var)).to eq(custom_logger.instance_variable_get(var))
+      end
     end
   end
 

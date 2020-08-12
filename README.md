@@ -1,4 +1,4 @@
-# Xlog v0.1.4
+# Xlog v0.1.5
 
 Xlog - awesome logger for your Rails app. Logs everything you need in well-formatted view with timestamp, caller path and tags.
 
