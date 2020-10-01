@@ -11,7 +11,7 @@ Style/DoubleNegation:
   Enabled: false
 
 Metrics/LineLength:
-  Max: 150
+  Max: 160
 
 Metrics/ParameterLists:
   Max: 6
@@ -19,7 +19,7 @@ Metrics/ParameterLists:
 Metrics/MethodLength:
   Max: 15
 
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Enabled: false  
 
 Metrics/AbcSize:

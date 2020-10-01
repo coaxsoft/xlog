@@ -13,35 +13,27 @@ module Xlog
       @folder_names_to_remove = Dir.glob('app/*').map { |f| f.gsub('app/', '') }
     end
 
-    def tag_logger(*tags)
-      @tags = tags
-    end
-
-    def clear_tags
-      @tags = nil
-    end
-
-    def log(type, text)
-      tags = [time_stamp, called_from(type), type] + Array.wrap(@tags)
+    def log(type, text, tags)
+      tags = [time_stamp, called_from(type), type] + Array.wrap(tags)
       @base_logger.tagged(tags.compact) { @base_logger.send(type, text) }
     end
 
-    def info(message, data)
-      log(:info, compose_log(message, data))
+    def info(message, data, tags)
+      log(:info, compose_log(message, data), tags)
     end
 
-    def warn(message, data)
-      log(:warn, compose_log(message, data))
+    def warn(message, data, tags)
+      log(:warn, compose_log(message, data), tags)
     end
 
     # do NOT refactor error and and_raise_error
-    def error(e, message, data)
+    def error(e, message, data, tags)
       # they MUST BE NOT DRY in order to log correct backtrace
-      log(:error, "#{e.class}: #{e.try(:message)}. \n #{compose_log(message, data)} \n Error backtrace: \n#{backtrace(e)}")
+      log(:error, "#{e.class}: #{e.try(:message)}. \n #{compose_log(message, data)} \n Error backtrace: \n#{backtrace(e)}", tags)
     end
 
-    def and_raise_error(e, message, data)
-      log(:error, "#{e.class}: #{e.try(:message)}. #{newline} #{compose_log(message, data)} #{newline} Error backtrace: #{newline} #{backtrace(e)}")
+    def and_raise_error(e, message, data, tags)
+      log(:error, "#{e.class}: #{e.try(:message)}. #{newline} #{compose_log(message, data)} #{newline} Error backtrace: #{newline} #{backtrace(e)}", tags)
       message.present? ? raise(e, message) : raise(e)
     end
 
