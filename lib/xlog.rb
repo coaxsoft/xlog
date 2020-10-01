@@ -9,28 +9,30 @@ module Xlog
   class << self
     attr_accessor :config, :app_name, :app_root, :base_logger, :xlogger
 
-    def tag_logger(*tags)
-      config.xlogger.tag_logger(tags)
+    # rubocop:disable Layout/LineLength
+    def tag_logger(*_tags)
+      puts "\e[33mWARING: 'tag_logger' is no longer supported as it's not thread safe. Use 'tags: ' named argument instead for 'info', 'warn', 'error', 'and_raise_error'.\e[0m"
     end
+    # rubocop:enable Layout/LineLength
 
     def clear_tags
-      config.xlogger.clear_tags
+      puts "\e[33mWARING: 'clear_tags' is no longer supported as it's not thread safe\e[0m"
     end
 
-    def info(message, data: nil)
-      config.xlogger.info(message, data)
+    def info(message, data: nil, tags: [])
+      config.xlogger.info(message, data, tags)
     end
 
-    def warn(message, data: nil)
-      config.xlogger.warn(message, data)
+    def warn(message, data: nil, tags: [])
+      config.xlogger.warn(message, data, tags)
     end
 
-    def error(e, message: nil, data: nil)
-      config.xlogger.error(e, message, data)
+    def error(e, message: nil, data: nil, tags: [])
+      config.xlogger.error(e, message, data, tags)
     end
 
-    def and_raise_error(e, message: nil, data: nil)
-      config.xlogger.and_raise_error(e, message, data)
+    def and_raise_error(e, message: nil, data: nil, tags: [])
+      config.xlogger.and_raise_error(e, message, data, tags)
     end
   end
 

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
+
 TEST_LOG = 'log/test_custom_logger.log'.freeze
+
 RSpec.describe Xlog do
   it 'has a version number' do
     expect(Xlog::VERSION).not_to be nil
@@ -47,6 +49,17 @@ RSpec.describe Xlog do
         expect(log_text).to include(message)
         expect(log_text).to include('[info]')
       end
+
+      context 'with tags' do
+        let(:tag) { Faker::Lorem.word }
+
+        it 'logs message and tag' do
+          Xlog.info(message, tags: tag)
+          expect(log_text).to include(message)
+          expect(log_text).to include('[info]')
+          expect(log_text).to include("[#{tag}]")
+        end
+      end
     end
 
     context '.warn' do
@@ -56,6 +69,17 @@ RSpec.describe Xlog do
         Xlog.warn(message)
         expect(log_text).to include(message)
         expect(log_text).to include('[warn]')
+      end
+
+      context 'with tags' do
+        let(:tag) { Faker::Lorem.word }
+
+        it 'logs message and tag' do
+          Xlog.warn(message, tags: tag)
+          expect(log_text).to include(message)
+          expect(log_text).to include('[warn]')
+          expect(log_text).to include("[#{tag}]")
+        end
       end
     end
 
@@ -71,6 +95,21 @@ RSpec.describe Xlog do
         expect(log_text).to include('Error backtrace')
         expect(log_text).to include('xlog/spec/xlog_spec.rb')
       end
+
+      context 'with tags' do
+        let(:tag) { Faker::Lorem.word }
+
+        it 'logs error and tag' do
+          raise StandardError.new
+        rescue StandardError => e
+          Xlog.error(e, message: message, tags: [tag])
+          expect(log_text).to include(message)
+          expect(log_text).to include('[error]')
+          expect(log_text).to include("[#{tag}]")
+          expect(log_text).to include('Error backtrace')
+          expect(log_text).to include('xlog/spec/xlog_spec.rb')
+        end
+      end
     end
 
     context '.and_raise_error' do
@@ -80,6 +119,21 @@ RSpec.describe Xlog do
         raise StandardError.new
       rescue StandardError => e
         expect { Xlog.and_raise_error(e, message: message) }.to raise_error StandardError
+      end
+
+      context 'with tags' do
+        let(:tag) { Faker::Lorem.word }
+
+        it 'logs error and tag' do
+          raise StandardError.new
+        rescue StandardError => e
+          expect { Xlog.and_raise_error(e, message: message, tags: tag) }.to raise_error StandardError
+          expect(log_text).to include(message)
+          expect(log_text).to include('[error]')
+          expect(log_text).to include("[#{tag}]")
+          expect(log_text).to include('Error backtrace')
+          expect(log_text).to include('xlog/spec/xlog_spec.rb')
+        end
       end
     end
 
@@ -91,8 +145,8 @@ RSpec.describe Xlog do
         Xlog.tag_logger(message1, message2)
         Xlog.info('Some message')
 
-        expect(log_text).to include("[#{message1}]")
-        expect(log_text).to include("[#{message2}]")
+        expect(log_text).not_to include("[#{message1}]")
+        expect(log_text).not_to include("[#{message2}]")
       end
     end
 

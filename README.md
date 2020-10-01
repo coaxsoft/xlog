@@ -1,19 +1,30 @@
-# Xlog v0.1.5
+# Xlog v0.1.6
 
 Xlog - awesome logger for your Rails app. Logs everything you need in well-formatted view with timestamp, caller path and tags.
 
 ## Usage
-##### Standard
+
+### `.info`
+
 Log any info with `.info` method
+
 ```ruby
 Xlog.info('Some info text') # [2019-04-30 12:29:13 UTC] [ArtilesController.show] [info] Message: Some info text
 ```
+
+
+### `.warn`
+
 Log important info with `.warn` method
+
 ```ruby
 Xlog.warn('Validation failed') # [2019-04-30 12:29:13 UTC] [ArticlesController.update] [warn] Message: Validation failed
 ```
 
+### `.error` and `.and_raise_error`
+
 Xlog has awesome `.error` and `.and_raise_error` methods
+
 ```ruby
 def index
   10 / 0  
@@ -22,7 +33,9 @@ def index
     Xlog.and_raise_error(e, data: { params: params }, message: 'Some message text here')
 end
 ```
+
 ...and the output
+
 ```
 [2019-04-30 11:48:33 UTC] [Admin::OrdersController.index] [error] ZeroDivisionError: divided by 0. 
   | Message: Some message text here
@@ -31,23 +44,56 @@ end
   | /home/me/test_app/app/controllers/admin/orders_controller.rb:7:in `/'
   | /home/me/test_app/app/controllers/admin/orders_controller.rb:7:in `index'
 ```
+
 The only difference between `Xlog.error` and `Xlog.and_raise_error` is that second one raises error after logging.
+
+Log any info with `.info` method
 
 Xlog automatically defines Rails application name and environment.
 It writes logs into `log/xlog_[environement].log`
 
-Xlog also supports custom tags
+### Data
+
+Any log method (`.info`, `.warn`, `.error`, `.and_raise_error`) supports `data: ` - named argument. Put any object as `data: my_object`
+and it will be logged as "inspected" object.
+
+
+```ruby
+Xlog.info('test info', data: { my: 'hash' })
+# [2020-10-01 15:41:45 +0300] [(irb):4:in `irbBinding'.irb_binding] [info] Message: test info
+#   | Data: {:my=>"hash"}
+
+```
+
+### Tags
+
+As far as `.tag_logger` is deprecated as it's not thread-safe, the new tags mechanism is presented.
+Any log method (`.info`, `.warn`, `.error`, `.and_raise_error`) supports `tag: ` - named argument
+
+```ruby
+Xlog.info('Some info text', tags: 'my_custom_tag') # [2019-04-30 12:29:13 UTC] [ArtilesController.show] [info] [my_custom_tag] Message: Some info text
+Xlog.warn('Validation failed', tags: %w[validation input_error]) # [2019-04-30 12:29:13 UTC] [ArticlesController.update] [warn] [validation] [input_error] Message: Validation failed
+Xlog.warn(error, tags: %w[fatal]) # [2019-04-30 12:29:13 UTC] [ArticlesController.update] [error] [fatal] Message: Zero division error
+```
+
+
+### `.tag_logger` [DEPRECATED]
+
 ```ruby
 Xlog.tag_logger('custom_tag')
 Xlog.info('Some text') # [2019-04-30 12:29:13 UTC] [ArtilesController.show] [info] [custom_tag] Message: Some info text
 ```
 
-Clear tags with: 
+Clear tags with: [DEPRECATED]
+
 ```ruby
 Xlog.clear_tags
 ```
-##### Middleware
+
+## Middleware
+
 From version 0.1.4 Xlog could be used as Rails middleware. It catches `StandardError` using `Xlog.and_raise_error`.
+
 ```ruby
 # /config/application.rb
  module MyApp
@@ -60,6 +106,7 @@ From version 0.1.4 Xlog could be used as Rails middleware. It catches `StandardE
 ```
 
 ## Configuration
+
 Xlog is ready to use right out of the box, but it's possible to reconfigure default logger. Default logger is simple `Logger.new`. Add this code to `config/initializers/xlog.rb` and set any custom logger you want.
 
 ```ruby
@@ -67,7 +114,9 @@ Xlog.configure do |config|
   config.custom_logger = Logger.new(STDOUT) # or Logger.new('foo.log', 10, 1024000) or any other
 end
 ```
+
 It's possible to set third-party logger like Logentries(r7rapid)
+
 ```ruby
 require 'le'
 
