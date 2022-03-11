@@ -5,6 +5,7 @@ module Xlog
     include Singleton
 
     attr_accessor :app_name, :app_root, :base_logger
+
     def initialize
       @base_logger = ActiveSupport::TaggedLogging.new(Logger.new("log/xlog_#{Rails.env}.log"))
 
