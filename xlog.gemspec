@@ -38,9 +38,10 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   spec.files = Dir['README.md', 'lib/**/*', 'lib/*', 'passpartu.gemspec']
 
-  spec.add_development_dependency 'bundler', '~> 2.1.4'
+  spec.add_development_dependency 'bundler', '~> 2.3', '>= 2.3.8'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
   spec.add_development_dependency 'faker'
   spec.add_development_dependency 'rails'
+  spec.add_development_dependency 'byebug'
 end

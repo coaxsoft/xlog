@@ -7,7 +7,7 @@ module Xlog
     attr_accessor :app_name, :app_root, :base_logger
 
     def initialize
-      @base_logger = ActiveSupport::TaggedLogging.new(Logger.new("log/xlog_#{Rails.env}.log"))
+      @base_logger = ActiveSupport::TaggedLogging.new(Logger.new("log/xlog_#{Rails.env}.log", 'weekly'))
 
       @app_name = Rails.application.class.to_s.split('::')[0].underscore
       @app_root = Rails.root.to_s
@@ -49,7 +49,7 @@ module Xlog
     end
 
     def time_stamp
-      Time.zone&.now || Time.current
+      Time.current
     end
 
     def compose_log(message, data)

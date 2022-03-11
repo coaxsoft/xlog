@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'rails'
+require 'active_support/core_ext/time/zones'
+require 'active_support/core_ext/time/calculations'
 require_relative 'xlog/xlogger'
 require_relative 'xlog/version'
 require_relative 'xlog/middleware'
