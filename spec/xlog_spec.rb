@@ -93,7 +93,7 @@ RSpec.describe Xlog do
         expect(log_text).to include(message)
         expect(log_text).to include('[error]')
         expect(log_text).to include('Error backtrace')
-        expect(log_text).to include('xlog/spec/xlog_spec.rb')
+        expect(log_text).to include('xlog/spec/xlog_spec.rb') # double check?
       end
 
       context 'with tags' do
@@ -107,7 +107,7 @@ RSpec.describe Xlog do
           expect(log_text).to include('[error]')
           expect(log_text).to include("[#{tag}]")
           expect(log_text).to include('Error backtrace')
-          expect(log_text).to include('xlog/spec/xlog_spec.rb')
+          expect(log_text).to include('xlog/spec/xlog_spec.rb') # double check?
         end
       end
     end
@@ -132,7 +132,7 @@ RSpec.describe Xlog do
           expect(log_text).to include('[error]')
           expect(log_text).to include("[#{tag}]")
           expect(log_text).to include('Error backtrace')
-          expect(log_text).to include('xlog/spec/xlog_spec.rb')
+          expect(log_text).to include('xlog/spec/xlog_spec.rb') # double check?
         end
       end
     end
