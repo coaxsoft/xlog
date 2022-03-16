@@ -1,4 +1,4 @@
-# Xlog v0.1.7
+# Xlog v0.1.8 - [changelog](https://github.com/coaxsoft/xlog/blob/master/CHANGELOG.md)
 
 Xlog - awesome logger for your Rails app. Logs everything you need in well-formatted view with timestamp, caller path and tags.
 
