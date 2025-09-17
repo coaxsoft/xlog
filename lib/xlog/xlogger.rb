@@ -14,32 +14,41 @@ module Xlog
       @folder_names_to_remove = Dir.glob('app/*').map { |f| f.gsub('app/', '') }
     end
 
-    def log(type, text, tags)
+    def log(type, text, tags, file_prefix: nil)
+      logger = logger_for(file_prefix)
       tags = [time_stamp, called_from(type), type] + Array.wrap(tags)
-      @base_logger.tagged(tags.compact) { @base_logger.send(type, text) }
+      logger.tagged(tags.compact) { logger.send(type, text) }
     end
 
-    def info(message, data, tags)
-      log(:info, compose_log(message, data), tags)
+    def info(message, data, tags, file_prefix: nil)
+      log(:info, compose_log(message, data), tags, file_prefix: file_prefix)
     end
 
-    def warn(message, data, tags)
-      log(:warn, compose_log(message, data), tags)
+    def warn(message, data, tags, file_prefix: nil)
+      log(:warn, compose_log(message, data), tags, file_prefix: file_prefix)
     end
 
     # do NOT refactor error and and_raise_error
-    def error(e, message, data, tags)
+    def error(e, message, data, tags, file_prefix: nil)
       # they MUST BE NOT DRY in order to log correct backtrace
-      log(:error, "#{e.class}: #{e.try(:message)}. \n #{compose_log(message, data)} \n Error backtrace: \n#{backtrace(e)}", tags)
+      log(:error, "#{e.class}: #{e.try(:message)}. \n #{compose_log(message, data)} \n Error backtrace: \n#{backtrace(e)}", tags, file_prefix: file_prefix)
     end
 
-    def and_raise_error(e, message, data, tags)
-      log(:error, "#{e.class}: #{e.try(:message)}. #{newline} #{compose_log(message, data)} #{newline} Error backtrace: #{newline} #{backtrace(e)}", tags)
+    def and_raise_error(e, message, data, tags, file_prefix: nil)
+      log(:error, "#{e.class}: #{e.try(:message)}. #{newline} #{compose_log(message, data)} #{newline} Error backtrace: #{newline} #{backtrace(e)}", tags, file_prefix: file_prefix)
       message.present? ? raise(e, message) : raise(e)
     end
 
     def custom_logger=(logger)
       @base_logger = ActiveSupport::TaggedLogging.new(logger)
+    end
+
+    def logger_for(file_prefix)
+      return @base_logger if file_prefix.blank?
+
+      ActiveSupport::TaggedLogging.new(
+        Logger.new("log/#{['xlog', file_prefix, Rails.env].compact.join('_')}.log", 'weekly')
+      )
     end
 
     private

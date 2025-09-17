@@ -4,6 +4,8 @@ require 'bundler/setup'
 require 'xlog'
 require 'faker'
 
+TEST_LOG = 'log/test_custom_logger.log'.freeze
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
@@ -16,6 +18,6 @@ RSpec.configure do |config|
   end
 end
 
-def log_text
-  File.open(TEST_LOG).read
+def log_text(file_path = TEST_LOG)
+  File.open(file_path).read
 end

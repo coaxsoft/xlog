@@ -21,20 +21,20 @@ module Xlog
       puts "\e[33mWARING: 'clear_tags' is no longer supported as it's not thread safe\e[0m"
     end
 
-    def info(message, data: nil, tags: [])
-      config.xlogger.info(message, data, tags)
+    def info(message, data: nil, tags: [], file_prefix: nil)
+      config.xlogger.info(message, data, tags, file_prefix: file_prefix)
     end
 
-    def warn(message, data: nil, tags: [])
-      config.xlogger.warn(message, data, tags)
+    def warn(message, data: nil, tags: [], file_prefix: nil)
+      config.xlogger.warn(message, data, tags, file_prefix: file_prefix)
     end
 
-    def error(e, message: nil, data: nil, tags: [])
-      config.xlogger.error(e, message, data, tags)
+    def error(e, message: nil, data: nil, tags: [], file_prefix: nil)
+      config.xlogger.error(e, message, data, tags, file_prefix: file_prefix)
     end
 
-    def and_raise_error(e, message: nil, data: nil, tags: [])
-      config.xlogger.and_raise_error(e, message, data, tags)
+    def and_raise_error(e, message: nil, data: nil, tags: [], file_prefix: nil)
+      config.xlogger.and_raise_error(e, message, data, tags, file_prefix: file_prefix)
     end
   end
 

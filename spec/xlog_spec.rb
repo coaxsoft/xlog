@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-TEST_LOG = 'log/test_custom_logger.log'.freeze
-
 RSpec.describe Xlog do
   it 'has a version number' do
     expect(Xlog::VERSION).not_to be nil
@@ -59,6 +57,21 @@ RSpec.describe Xlog do
           expect(log_text).to include('[info]')
           expect(log_text).to include("[#{tag}]")
         end
+
+        context 'with custom file prefix' do
+          let(:file_prefix) { 'custom_prefix' }
+
+          it 'logs message and tag' do
+            Xlog.info(message, tags: tag, file_prefix: file_prefix)
+
+            expect(log_text).to be_blank
+
+            custom_file_path = "log/#{['xlog', file_prefix, Rails.env].compact.join('_')}.log"
+            expect(log_text(custom_file_path)).to include(message)
+            expect(log_text(custom_file_path)).to include('[info]')
+            expect(log_text(custom_file_path)).to include("[#{tag}]")
+          end
+        end
       end
     end
 
@@ -79,6 +92,21 @@ RSpec.describe Xlog do
           expect(log_text).to include(message)
           expect(log_text).to include('[warn]')
           expect(log_text).to include("[#{tag}]")
+        end
+
+        context 'with custom file prefix' do
+          let(:file_prefix) { 'custom_prefix' }
+
+          it 'logs message and tag to custom file' do
+            Xlog.warn(message, tags: tag, file_prefix: file_prefix)
+
+            expect(log_text).to be_blank
+
+            custom_file_path = "log/#{['xlog', file_prefix, Rails.env].compact.join('_')}.log"
+            expect(log_text(custom_file_path)).to include(message)
+            expect(log_text(custom_file_path)).to include('[warn]')
+            expect(log_text(custom_file_path)).to include("[#{tag}]")
+          end
         end
       end
     end
@@ -109,6 +137,25 @@ RSpec.describe Xlog do
           expect(log_text).to include('Error backtrace')
           expect(log_text).to include('xlog/spec/xlog_spec.rb') # double check?
         end
+
+
+        context 'with custom file prefix' do
+          let(:file_prefix) { 'custom_prefix' }
+
+          it 'logs error and tag to custom file' do
+            raise StandardError.new
+          rescue StandardError => e
+            Xlog.error(e, message: message, tags: [tag], file_prefix: file_prefix
+)
+            expect(log_text).to be_blank
+
+            custom_file_path = "log/#{['xlog', file_prefix, Rails.env].compact.join('_')}.log"
+            expect(log_text(custom_file_path)).to include('[error]')
+            expect(log_text(custom_file_path)).to include("[#{tag}]")
+            expect(log_text(custom_file_path)).to include('Error backtrace')
+            expect(log_text(custom_file_path)).to include('xlog/spec/xlog_spec.rb')
+          end
+        end
       end
     end
 
@@ -133,6 +180,24 @@ RSpec.describe Xlog do
           expect(log_text).to include("[#{tag}]")
           expect(log_text).to include('Error backtrace')
           expect(log_text).to include('xlog/spec/xlog_spec.rb') # double check?
+        end
+
+        context 'with custom file prefix' do
+          let(:file_prefix) { 'custom_prefix' }
+
+          it 'logs error and tag to custom file' do
+            raise StandardError.new
+          rescue StandardError => e
+            expect { Xlog.and_raise_error(e, message: message, tags: tag, file_prefix: file_prefix) }.to raise_error StandardError
+
+            expect(log_text).to be_blank
+
+            custom_file_path = "log/#{['xlog', file_prefix, Rails.env].compact.join('_')}.log"
+            expect(log_text(custom_file_path)).to include('[error]')
+            expect(log_text(custom_file_path)).to include("[#{tag}]")
+            expect(log_text(custom_file_path)).to include('Error backtrace')
+            expect(log_text(custom_file_path)).to include('xlog/spec/xlog_spec.rb')
+          end
         end
       end
     end
